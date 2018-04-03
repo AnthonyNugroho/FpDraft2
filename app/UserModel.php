@@ -8,6 +8,6 @@ class UserModel extends Model
 {
   public $timestamps = false;
   protected $table = 'user';
-  protected $fillable = ['username','password'];
+  protected $fillable = ['name','email','password'];
   protected $guarded = [];
 }

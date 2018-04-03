@@ -19,7 +19,8 @@ class UserController extends Controller
   public function register(Request $request)
   {
     $user = [
-      "username" =>$request->username,
+      "name" =>$request->name,
+      "email" =>$request->email,
       "password" => md5($request->password)
     ];
 
@@ -34,9 +35,9 @@ class UserController extends Controller
     }
   }
 
-  public function find($username)
+  public function find($name)
   {
-    $user = $this->user->find($username);
+    $user = $this->user->find($name);
     return $user;
   }
 
@@ -46,21 +47,22 @@ class UserController extends Controller
     return response()->json($users,200);
   }
 
-  public function delete($username)
+  public function delete($name)
     {
-      DB::table('user')->where('username',$username)->delete();
+      DB::table('user')->where('name',$name)->delete();
       return response('Deleted',201);
     }
 
-  public function update(Request $request, $username)
+  public function update(Request $request, $name)
   {
   $user = [
-    "username" => $request->username,
+    "name" => $request->name,
+    "email" => $request->email,
     "password" => md5($request->password)
   ];
     try
       {
-        $this->user->where('username',$username)->update($user);
+        $this->user->where('name',$name)->update($user);
         return response ('Updated', 201);
       }
       catch(Exception $ex)
