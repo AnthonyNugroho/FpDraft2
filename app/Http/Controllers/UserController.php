@@ -37,7 +37,7 @@ class UserController extends Controller
 
   public function find($name)
   {
-    $user = $this->user->find($name);
+    $user = $this->user->where('name',$name)->get();
     return $user;
   }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
       return response('Deleted',201);
     }
 
-  public function update(Request $request, $name)
+  public function update(Request $request, $email)
   {
   $user = [
     "name" => $request->name,
@@ -62,7 +62,7 @@ class UserController extends Controller
   ];
     try
       {
-        $this->user->where('name',$name)->update($user);
+        $this->user->where('email',$email)->update($user);
         return response ('Updated', 201);
       }
       catch(Exception $ex)

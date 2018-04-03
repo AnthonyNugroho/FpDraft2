@@ -37,7 +37,7 @@ class GameController extends Controller
 
     public function find($title)
     {
-      $game = $this->game->find($title);
+      $game = $this->game->where('title',$title)->get();
       return $game;
     }
 
@@ -53,9 +53,9 @@ class GameController extends Controller
         return response('Deleted',201);
       }
 
-    public function update(Request $request, $tile)
+    public function update(Request $request, $title)
     {
-    $user = [
+    $game = [
       "title" => $request->title,
       "description" => $request->description
     ];
