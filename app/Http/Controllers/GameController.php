@@ -27,7 +27,7 @@ class GameController extends Controller
       try
       {
         $game = $this->game->create($game);
-        return response('Created',201);
+        return response('Created',200);
       }
       catch(Exception $ex)
       {
@@ -50,7 +50,7 @@ class GameController extends Controller
     public function delete($title)
       {
         DB::table('game')->where('title',$title)->delete();
-        return response('Deleted',201);
+        return response('Deleted',200);
       }
 
     public function update(Request $request, $title)

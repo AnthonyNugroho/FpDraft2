@@ -27,7 +27,7 @@ class UserController extends Controller
     try
     {
       $user = $this->user->create($user);
-      return response('created',201);
+      return response('created',200);
     }
     catch(Exception $ex)
     {
@@ -50,7 +50,7 @@ class UserController extends Controller
   public function delete($name)
     {
       DB::table('user')->where('name',$name)->delete();
-      return response('Deleted',201);
+      return response('Deleted',200);
     }
 
   public function update(Request $request, $email)
@@ -63,7 +63,7 @@ class UserController extends Controller
     try
       {
         $this->user->where('email',$email)->update($user);
-        return response ('Updated', 201);
+        return response ('Updated', 200);
       }
       catch(Exception $ex)
     {
