@@ -10,4 +10,9 @@ class UserModel extends Model
   protected $table = 'user';
   protected $fillable = ['name','email','password'];
   protected $guarded = [];
+
+  public function comment()
+  {
+      return $this->hasMany('App\Comment', 'iduser');
+  }
 }

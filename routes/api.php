@@ -40,3 +40,5 @@ Route::patch('/game/update/{title}','GameController@update');
 Route::get('/game/comment/all','CommentController@all');
 
 Route::post('/game/comment','CommentController@register');
+
+Route::get('/user/comment/{id}',"UserController@getComment");

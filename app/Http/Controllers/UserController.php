@@ -41,6 +41,13 @@ class UserController extends Controller
     return $user;
   }
 
+  public function getComment($id)
+  {
+  $users = UserModel::findOrFail($id);
+  $users->comment;
+  return $users;
+  }
+
   public function all()
   {
     $users = $this->user->all();
