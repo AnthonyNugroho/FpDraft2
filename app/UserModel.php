@@ -3,8 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\UserModel as Authenticatable;
 
-class UserModel extends Model
+class UserModel extends Authenticatable implements JWTSubject
 {
   public $timestamps = false;
   protected $table = 'user';
@@ -15,4 +18,16 @@ class UserModel extends Model
   {
       return $this->hasMany('App\Comment', 'iduser');
   }
+
+  use Notifiable;
+
+  public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+  public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

@@ -42,3 +42,17 @@ Route::get('/game/comment/all','CommentController@all');
 Route::post('/game/comment','CommentController@register');
 
 Route::get('/user/comment/{id}',"UserController@getComment");
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
