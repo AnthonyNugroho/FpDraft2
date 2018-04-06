@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\UserModel;
 use DB;
 use Exception;
@@ -16,25 +18,14 @@ class UserController extends Controller
     $this->user= $user;
   }
 
-  public function register(Request $request)
+  public function create(array $data)
   {
-    $user = [
-      "name" =>$request->name,
-      "email" =>$request->email,
-      "password" => md5($request->password)
-    ];
-
-    try
-    {
-      $user = $this->user->create($user);
-      return response('created',200);
-    }
-    catch(Exception $ex)
-    {
-      return response ($ex,400);
-    }
+      return User::create([
+          'name' => $data['name'],
+          'email' => $data['email'],
+          'password' => Hash::make($data['password']),
+      ]);
   }
-
   public function find($name)
   {
     $user = $this->user->where('name',$name)->get();
@@ -65,7 +56,7 @@ class UserController extends Controller
   $user = [
     "name" => $request->name,
     "email" => $request->email,
-    "password" => md5($request->password)
+    "password" => $request->password
   ];
     try
       {

@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/user',"UserController@all");
 
-Route::post('/user',"UserController@register");
+Route::post('/user',"UserController@create");
 
 Route::get('/user/{name}',"UserController@find");
 
@@ -43,16 +43,13 @@ Route::post('/game/comment','CommentController@register');
 
 Route::get('/user/comment/{id}',"UserController@getComment");
 
-Route::group([
 
-    'middleware' => 'api',
-    'prefix' => 'auth'
-
-], function ($router) {
-
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login')->name('login');
+Route::post('recover', 'AuthController@recover');
+Route::group(['middleware' => ['jwt.auth']], function() {
+    Route::get('logout', 'AuthController@logout');
+    Route::get('test', function(){
+        return response()->json(['foo'=>'bar']);
+    });
 });
