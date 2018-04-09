@@ -19,7 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/user',"UserController@all");
 
-Route::post('/user',"UserController@create");
 
 Route::get('/user/{name}',"UserController@find");
 
@@ -42,6 +41,8 @@ Route::get('/game/comment/all','CommentController@all');
 Route::post('/game/comment','CommentController@register');
 
 Route::get('/user/comment/{id}',"UserController@getComment");
+
+Route::get('/game/comment/{id}', "GameController@getComment");
 
 
 Route::post('register', 'AuthController@register');

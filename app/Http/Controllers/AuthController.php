@@ -106,7 +106,7 @@ class AuthController extends Controller
 
     public function recover(Request $request)
    {
-       $user = User::where('email', $request->email)->first();
+       $user = UserModel::where('email', $request->email)->first();
        if (!$user) {
            $error_message = "Your email address was not found.";
            return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);

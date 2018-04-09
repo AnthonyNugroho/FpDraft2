@@ -47,7 +47,7 @@ class UserController extends Controller
 
   public function delete($name)
     {
-      DB::table('user')->where('name',$name)->delete();
+      DB::table('users')->where('name',$name)->delete();
       return response('Deleted',200);
     }
 

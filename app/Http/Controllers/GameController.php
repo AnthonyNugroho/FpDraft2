@@ -35,6 +35,13 @@ class GameController extends Controller
       }
     }
 
+    public function getComment($id)
+    {
+    $game = GameModel::findOrFail($id);
+    $game->comment;
+    return $game;
+    }
+
     public function find($title)
     {
       $game = $this->game->where('title',$title)->get();
