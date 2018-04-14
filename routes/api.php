@@ -24,7 +24,7 @@ Route::get('/user/{name}',"UserController@find");
 
 Route::delete('/user/{nama}','UserController@delete');
 
-Route::patch('/user/update/{email}','UserController@update');
+Route::patch('/user/{email}','UserController@update');
 
 Route::get('/game', "GameController@all");
 
