@@ -26,11 +26,14 @@ Route::delete('/user/{nama}','UserController@delete');
 
 Route::patch('/user/{email}','UserController@update');
 
-Route::get('/game', "GameController@all");
+Route::group(['middleware' => 'cors'], function(){
+  Route::get('/game', "GameController@all");});
+
+
 
 Route::post('/game','GameController@register');
 
-Route::get('/game/{title}',"gameController@find");
+Route::get('/game//{id}',"gameController@find");
 
 Route::delete('/game/{title}',"gameController@delete");
 

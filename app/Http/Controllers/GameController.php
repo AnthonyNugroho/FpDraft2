@@ -42,9 +42,9 @@ class GameController extends Controller
     return $game;
     }
 
-    public function find($title)
+    public function find($id)
     {
-      $game = $this->game->where('title',$title)->get();
+      $game = $this->game->findOrFail($id);
       return $game;
     }
 
