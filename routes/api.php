@@ -34,7 +34,7 @@ Route::get('/game/{title}',"gameController@find");
 
 Route::delete('/game/{title}',"gameController@delete");
 
-Route::patch('/game/update/{title}','GameController@update');
+Route::patch('/game/{title}','GameController@update');
 
 Route::get('/game/comment/all','CommentController@all');
 
