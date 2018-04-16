@@ -33,11 +33,11 @@ Route::group(['middleware' => 'cors'], function(){
 
 Route::post('/game','GameController@register');
 
-Route::get('/game//{id}',"gameController@find");
+Route::get('/game/{id}',"gameController@find");
 
-Route::delete('/game/{title}',"gameController@delete");
+Route::delete('/game/{id}',"gameController@delete");
 
-Route::patch('/game/{title}','GameController@update');
+Route::put('/game/{id}','GameController@update');
 
 Route::get('/game/comment/all','CommentController@all');
 

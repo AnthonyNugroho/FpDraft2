@@ -27,7 +27,7 @@ class GameController extends Controller
       try
       {
         $game = $this->game->create($game);
-        return response('Created',200);
+        return response()->json($games,200);
       }
       catch(Exception $ex)
       {
@@ -54,13 +54,13 @@ class GameController extends Controller
       return response()->json($games,200);
     }
 
-    public function delete($title)
+    public function delete($id)
       {
-        DB::table('game')->where('title',$title)->delete();
-        return response('Deleted',200);
+        DB::table('game')->where('id',$id)->delete();
+        return response()->json([],200);
       }
 
-    public function update(Request $request, $title)
+    public function update(Request $request, $id)
     {
     $game = [
       "title" => $request->title,
@@ -68,8 +68,8 @@ class GameController extends Controller
     ];
       try
         {
-          $this->game->where('title',$title)->update($game);
-          return response ('Updated', 201);
+          $this->game->findOrFail($id)->update($game);
+          return response()->json([], 201);
         }
         catch(Exception $ex)
       {
