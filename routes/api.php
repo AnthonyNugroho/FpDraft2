@@ -26,8 +26,8 @@ Route::delete('/user/{nama}','UserController@delete');
 
 Route::patch('/user/{email}','UserController@update');
 
-Route::group(['middleware' => 'cors'], function(){
-  Route::get('/game', "GameController@all");});
+
+Route::get('/game', "GameController@all");
 
 
 
