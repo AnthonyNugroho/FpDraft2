@@ -8,6 +8,6 @@ class Comment extends Model
 {
   public $timestamps =false;
   protected $table ='comment';
-  protected $fillable = ['iduser','idgame','comment'];
+  protected $fillable = ['user_id','game_id','comment'];
   protected $guarded =[];
 }

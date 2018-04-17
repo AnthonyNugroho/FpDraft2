@@ -17,7 +17,7 @@ class UserModel extends Authenticatable implements JWTSubject
 
   public function comment()
   {
-      return $this->hasMany('App\Comment', 'iduser');
+      return $this->hasMany('App\Comment', 'user_id');
   }
   use Notifiable;
 

@@ -16,7 +16,7 @@ class GameModel extends Model
 
     public function comment()
     {
-        return $this->hasMany('App\Comment', 'idgame');
+        return $this->hasMany('App\Comment', 'game_id');
     }
 
 }
