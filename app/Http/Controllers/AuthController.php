@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Validator, DB, Hash, Mail;
+use Validator, DB, Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Mail\Message;
 use App\UserModel;
@@ -16,84 +16,58 @@ class AuthController extends Controller
 
   public function register(Request $request)
   {
-      $credentials = $request->only('name', 'email', 'password');
+    $validator = Validator::make($request->all(), [
+      'username'=>'required',
+      'name' => 'required',
+      'email' => 'required|string|email',
+      'password' => 'required',
+    ]);
 
-      $rules = [
-          'name' => 'required|max:255',
-          'email' => 'required|email|max:255|unique:users'
-      ];
-      $validator = Validator::make($credentials, $rules);
-      if($validator->fails()) {
-          return response()->json(['success'=> false, 'error'=> $validator->messages()]);
-      }
-      $name = $request->name;
-      $email = $request->email;
-      $password = $request->password;
+    if($validator -> fails())
+    {
+      return response()->json($validator->messages(),401);
+    }
 
-      $user = UserModel::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
-      $verification_code = str_random(30); //Generate verification code
-      DB::table('user_verifications')->insert(['user_id'=>$user->id,'token'=>$verification_code]);
-      $subject = "Please verify your email address.";
-      Mail::send('verify', ['name' => $name, 'verification_code' => $verification_code],
-          function($mail) use ($email, $name, $subject){
-              $mail->from(getenv('MAIL_USERNAME'), "fp-binusian");
-              $mail->to($email, $name);
-              $mail->subject($subject);
-          });
-      return response()->json(['success'=> true, 'message'=> 'Thanks for signing up! Please check your email to complete your registration.']);
+    $user = UserModel::create([
+      'username'=>$request->input('username'),
+      'name' => $request->input('name'),
+      'email' => $request->input('email'),
+      'password' => bcrypt($request->input('password')),
+    ]);
+
+    return response([
+      'status' => 'success',
+      'data' => $user,
+    ], 200);
   }
 
-     public function verifyUser($verification_code)
-   {
-       $check = DB::table('user_verifications')->where('token',$verification_code)->first();
-       if(!is_null($check)){
-           $user = UserModel::find($check->user_id);
-           if($user->is_verified == 1){
-               return response()->json([
-                   'success'=> true,
-                   'message'=> 'Account already verified..'
-               ]);
-           }
-           $user->update(['is_verified' => 1]);
-           DB::table('user_verifications')->where('token',$verification_code)->delete();
-           return response()->json([
-               'success'=> true,
-               'message'=> 'You have successfully verified your email address.'
-           ]);
-       }
-       return response()->json(['success'=> false, 'error'=> "Verification code is invalid."]);
-   }
 
   public function login(Request $request)
      {
-         $credentials = $request->only('email', 'password');
-
-         $rules = [
-             'email' => 'required|email',
-             'password' => 'required',
-         ];
-         $validator = Validator::make($credentials, $rules);
+         $validator = Validator::make($request->all(), [
+           'email' => 'required|email',
+           'password' => 'required',
+         ]);
          if($validator->fails()) {
              return response()->json(['success'=> false, 'error'=> $validator->messages()]);
          }
 
-         $credentials['is_verified'] = 1;
+         $credentials = $request->only('email','password');
 
          try {
              // attempt to verify the credentials and create a token for the user
-             if (! $token = JWTAuth::attempt($credentials)) {
-                 return response()->json(['success' => false, 'error' => 'We cant find an account with this credentials. Please make sure you entered the right information and you have verified your email address.'], 401);
+             if (!$token = JWTAuth::attempt($credentials)) {
+                 return response()->json(['success' => false, 'error' => 'email or password is incorrect.'], 401);
              }
          } catch (JWTException $e) {
              // something went wrong whilst attempting to encode the token
-             return response()->json(['success' => false, 'error' => 'Failed to login, please try again.'], 500);
+             return response()->json(['success' => false, 'error' => 'cannot create token.'], 500);
          }
          // all good so return the token
          return response()->json(['success' => true, 'data'=> [ 'token' => $token ]]);
      }
 
   public function logout(Request $request) {
-        $this->validate($request, ['token' => 'required']);
 
         try {
             JWTAuth::invalidate($request->input('token'));
@@ -104,24 +78,5 @@ class AuthController extends Controller
         }
     }
 
-    public function recover(Request $request)
-   {
-       $user = UserModel::where('email', $request->email)->first();
-       if (!$user) {
-           $error_message = "Your email address was not found.";
-           return response()->json(['success' => false, 'error' => ['email'=> $error_message]], 401);
-       }
-       try {
-           Password::sendResetLink($request->only('email'), function (Message $message) {
-               $message->subject('Your Password Reset Link');
-           });
-       } catch (\Exception $e) {
-           //Return with error
-           $error_message = $e->getMessage();
-           return response()->json(['success' => false, 'error' => $error_message], 401);
-       }
-       return response()->json([
-           'success' => true, 'data'=> ['message'=> 'A reset email has been sent! Please check your email.']
-       ]);
-   }
+
 }

@@ -21,14 +21,15 @@ class UserController extends Controller
   public function create(array $data)
   {
       return User::create([
+          'username'=>$data['username'],
           'name' => $data['name'],
           'email' => $data['email'],
           'password' => Hash::make($data['password']),
       ]);
   }
-  public function find($name)
+  public function find($username)
   {
-    $user = $this->user->where('name',$name)->get();
+    $user = $this->user->where('username',$username)->get();
     return $user;
   }
 
@@ -56,7 +57,7 @@ class UserController extends Controller
   $user = [
     "name" => $request->name,
     "email" => $request->email,
-    "password" => $request->password
+    "password" => bcrypt($request->input('password')),
   ];
     try
       {

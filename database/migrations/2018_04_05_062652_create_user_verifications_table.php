@@ -13,17 +13,17 @@ class CreateUserVerificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_verifications', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('token');
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_verified')->default(0);
-          });
+        // Schema::create('user_verifications', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->integer('user_id')->unsigned();
+        //     $table->string('token');
+        //
+        //     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        // });
+        //
+        // Schema::table('users', function (Blueprint $table) {
+        //     $table->boolean('is_verified')->default(0);
+        //   });
     }
 
     /**

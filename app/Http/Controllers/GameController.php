@@ -27,7 +27,7 @@ class GameController extends Controller
       try
       {
         $game = $this->game->create($game);
-        return response()->json($games,200);
+        return response()->json($game,200);
       }
       catch(Exception $ex)
       {
