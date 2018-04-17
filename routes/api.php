@@ -39,7 +39,7 @@ Route::delete('/game/{id}',"gameController@delete");
 
 Route::put('/game/{id}','GameController@update');
 
-Route::get('/game/comment/all','CommentController@all');
+Route::get('/game/comment','CommentController@all');
 
 Route::post('/game/comment','CommentController@register');
 
