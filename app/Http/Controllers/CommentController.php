@@ -14,20 +14,21 @@ class CommentController extends Controller
   public function __construct(Comment $comment)
   {
     $this->comment = $comment;
+    $this->middleware('auth:api')->except('all');
   }
 
   public function register(Request $request)
   {
     $comment = [
-      "iduser"=>$request->iduser,
-      "idgame"=>$request->idgame,
+      "user_id"=>$request->user()->id,
+      "game_id"=>$request->id,
       "comment"=>$request->comment
     ];
 
     try
     {
       $comment = $this->comment->create($comment);
-      return response('Created',201);
+      return response()->json($comment,200);
     }
     catch(Exception $ex)
     {

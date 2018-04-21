@@ -15,6 +15,7 @@ class GameController extends Controller
     public function __construct(GameModel $game)
     {
       $this->game = $game;
+      $this->middleware('auth:api')->except(['all','find']);
     }
 
     public function register(Request $request)

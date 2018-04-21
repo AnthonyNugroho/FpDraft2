@@ -64,7 +64,8 @@ class AuthController extends Controller
              return response()->json(['success' => false, 'error' => 'cannot create token.'], 500);
          }
          // all good so return the token
-         return response()->json(['success' => true, 'data'=> [ 'token' => $token ]]);
+         $user = UserModel::where('email', $request->email)->first();
+         return response()->json(['success' => true, 'data'=> [ 'token' => $token ], 'username'=> $user->username]);
      }
 
   public function logout(Request $request) {
