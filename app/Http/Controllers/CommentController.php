@@ -40,4 +40,10 @@ class CommentController extends Controller
     $comments = $this->comment->all();
     return response()->json($comments,200);
   }
+
+  public function delete($id)
+    {
+      DB::table('comment')->where('id',$id)->delete();
+      return response()->json([],200);
+    }
 }

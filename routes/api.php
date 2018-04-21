@@ -19,17 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/user',"UserController@all");
 
-
 Route::get('/user/{username}',"UserController@find");
 
 Route::delete('/user/{nama}','UserController@delete');
 
 Route::patch('/user/{email}','UserController@update');
 
-
 Route::get('/game', "GameController@all");
-
-
 
 Route::post('/game','GameController@register');
 
@@ -46,6 +42,8 @@ Route::post('/game/comment/{id}','CommentController@register');
 Route::get('/user/comment/{id}',"UserController@getComment");
 
 Route::get('/game/comment/{id}', "GameController@getComment");
+
+Route::delete('game/comment/{id}','CommentController@delete');
 
 
 Route::post('register', 'AuthController@register');
