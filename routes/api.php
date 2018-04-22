@@ -43,7 +43,7 @@ Route::get('/user/comment/{id}',"UserController@getComment");
 
 Route::get('/game/comment/{id}', "GameController@getComment");
 
-Route::delete('game/comment/{id}','CommentController@delete');
+Route::delete('/game/comment/{id}','CommentController@delete');
 
 
 Route::post('register', 'AuthController@register');

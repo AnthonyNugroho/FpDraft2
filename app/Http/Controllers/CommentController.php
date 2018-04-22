@@ -41,9 +41,14 @@ class CommentController extends Controller
     return response()->json($comments,200);
   }
 
-  public function delete($id)
+  public function delete(Request $request)
     {
-      DB::table('comment')->where('id',$id)->delete();
+      $comment = Comment::findOrFail($request->id);
+      $user = $request->user();
+      if(!$comment['user_id'] == $user['id']){
+        return response()->json(['msg'=>'this is not your comment'], 400);
+      }
+      DB::table('comment')->where('id',$comment->id)->delete();
       return response()->json([],200);
     }
 }
